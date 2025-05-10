@@ -1,3 +1,6 @@
+# WWebjs
+.wwebjs_cache
+.wwebjs_auth
 # Logs
 logs
 *.log
