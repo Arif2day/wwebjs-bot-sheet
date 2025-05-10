@@ -3,6 +3,8 @@
 .wwebjs_auth
 # Logs
 *.log
+logs/source/*.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
