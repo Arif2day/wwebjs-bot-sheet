@@ -22,7 +22,7 @@ function countKeySumNumber(arr, key) {
     return count;
   }
 
-function formatDate(date,type) {
+function formatDate(date,type=1) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -135,6 +135,15 @@ function calculateDueDates(startDate, interval, numberOfInstallments) {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   }
 
+  const updateObjectKey = (array, idx, key, value) => {
+    return array.map(obj => {
+      if (obj.idx === idx) {
+        return { ...obj, [key]: value };
+      }
+      return obj;
+    });
+  };
+
 module.exports = {
     formatDate: formatDate,
     sanitizedNumber: sanitizedNumber,
@@ -147,5 +156,6 @@ module.exports = {
     calculateDueDates:calculateDueDates,
     findYoungestDate:findYoungestDate,
     secondsToHHMMSS:secondsToHHMMSS,
-    delayAFunction:delayAFunction
+    delayAFunction:delayAFunction,
+    updateObjectKey:updateObjectKey
 };

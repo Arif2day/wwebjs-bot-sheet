@@ -1,10 +1,10 @@
-const {getRandomDelay,delayAFunction} = require('./common');
+const {getRandomDelay} = require('./common');
 
 // notify use random delay
 async function notifierLoop(array, func) {
     for (let index = 0; index < array.length; index++) {
         const delay = getRandomDelay();
-        console.log(`\n[Delay System] - wait for ${(delay / 1000).toFixed(2)} seconds...`);
+        console.log(`\n[Delay System] - wait for ${(delay / 1000).toFixed(2)} seconds...\n`);
 
         await new Promise(resolve => setTimeout(resolve, delay));
         func(array[index], index);

@@ -1,11 +1,10 @@
 const {Client,LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const path = require('path');
-const {convertToInterpolationString,formatDate,findPropertyByPrefix} = require('./common');
+const {convertToInterpolationString,formatDate,findPropertyByPrefix, updateObjectKey} = require('./common');
 const dotenv = require('dotenv');
 const { logNotificationHistory } = require('./logger');
 const {notifierLoop} = require('./notifier');
-const { log } = require('console');
 const { readJSON, logFilePath, writeJSON } = require('./jsonLogger');
 dotenv.config({ path: path.join( __dirname,'../', '.env') });
 
@@ -20,7 +19,6 @@ const client = new Client({
 client.once('ready',async()=>{
     console.log('[Whatsapp Client] - is ready!');  
     const today = new Date();
-    
     
     try {        
         var dataSource = readJSON(logFilePath());
@@ -37,11 +35,10 @@ client.once('ready',async()=>{
         console.log('[Data Source] - ready to access...'):
         console.log('[Data Source] - nothing to process...');
         
-        await notifierLoop(unprocessed,async (item,index)=>{       
-            // console.log(formatDate(new Date(item.tgl_tempo),2));    
+        await notifierLoop(unprocessed,async (item,index)=>{      ;    
             var format,type;
             console.log((index+1)+' of '+(unprocessed.length));
-            if(item.type_notif=='Notifikasi Tunggakan'){
+            if(item.type_notif=='Notifikasi Tunggakan'){    
                 if(item.last_due_date<formatDate(today)){
                     //F_T2
                     type = "Tunggakan lama" 
@@ -62,9 +59,9 @@ client.once('ready',async()=>{
                     format = process.env.FORMAT_HM2
                 }
             }
+            item.enter = "\n";
             var message = convertToInterpolationString(format,item)
             var number = findPropertyByPrefix(item,'whatsapp_')
-            // console.log(message);
             await sendMsg(number,message)
             // log file
             logNotificationHistory(`${item.type_notif} kelompok ${item.kelompok} (${type}) dikirim ke ${item.send_to} - ${number}`);
@@ -73,7 +70,7 @@ client.once('ready',async()=>{
 
             // update json log                        
             // Synchronously write the updated data back to the JSON file
-            dataSource[index].notif_status = true
+            dataSource = updateObjectKey(dataSource,item.idx,'notif_status',true)
             writeJSON(logFilePath(),dataSource,`[Data Source] - berhasil diupdate!`);
             console.log('----------------------------------------------------------');
             console.log('Notifikasi Total                     : ',dataSource.length);
@@ -99,15 +96,7 @@ client.on('message', async msg => {
     if(!msg.isStatus)
     {
         if(!(await msg.getChat()).isGroup)
-        {
-             {
-                // console.log(`${JSON.stringify(await msg.getContact())}`);
-                // console.log(`PESAN== ${msg.body}`);
-                // console.log(`BROAD== ${msg.broadcast}`);
-                // console.log(`STTUS== ${msg.isStatus}`);
-                // console.log(`GROUP== ${(await msg.getChat()).isGroup}`);
-             }
-            
+        {            
             if (msg.body.toUpperCase() == 'INFO') {
                 setTimeout(async() => {
                     await (await msg.getChat()).sendStateTyping().then(async()=>{
