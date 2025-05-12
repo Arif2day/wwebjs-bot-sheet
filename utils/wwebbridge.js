@@ -35,7 +35,7 @@ client.once('ready',async()=>{
         console.log('[Data Source] - ready to access...'):
         console.log('[Data Source] - nothing to process...');
         
-        await notifierLoop(unprocessed,async (item,index)=>{      ;    
+        await notifierLoop(unprocessed,async (item,index)=>{         
             var format,type;
             console.log((index+1)+' of '+(unprocessed.length));
             if(item.type_notif=='Notifikasi Tunggakan'){    
