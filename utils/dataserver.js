@@ -138,7 +138,7 @@ function getServedNotificationData(allData) {
         return item.tanggal_angsuran == today.getDate();
     });
     h2Data = allData.filter(item => {
-        return item.tanggal_angsuran == today.getDate()-2;
+        return item.tanggal_angsuran == today.getDate()+2;
     });
     h0Data.concat(h2Data).forEach(element => {
         if(element.hasOwnProperty('angsuran_total')){
