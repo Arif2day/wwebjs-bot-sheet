@@ -9,7 +9,7 @@
 
 3. CLONE PROJECT LEWAT TERMINAL
 * git clone https://github.com/Arif2day/wwebjs-bot-sheet.git
-* INSTALL SEMUA DEPENDENSI - SEPERTI PADA VIDEO
+* INSTALL SEMUA DEPENDENSI - SEPERTI PADA VIDEO (npm install)
 * rename file didalam folder aplikasi (.env.example menjadi .env)
 * APLIKASI SIAP DI JALANKAN
 
