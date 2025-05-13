@@ -20,8 +20,8 @@ if not defined foundFile (
 )
 
 :: Step 2: Append GKFP=filename to the .env file
-echo %key%="%foundFile%>>"%envFile%""
-echo Appended %key%=%foundFile% to %envFile%
+echo %key%=%foundFile%>>"%envFile%"
+echo Appended %key%="%foundFile%" to %envFile%
 
 
 @echo on
