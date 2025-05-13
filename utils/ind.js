@@ -62,24 +62,6 @@ async function aS() {
     return r;
 }
 
-async function waS() {
-    const client = await auth.getClient();
-    const she = google.sheets({ version: "v4", auth: client });
-
-    const spreadsheetId = "1Nv4ZRH7_bo_gb6uFGtGy8s58dH7t5uahRWYAmabrKuE";
-
-    const wR = await she.spreadsheets.values.update({
-        spreadsheetId,
-        range: "Sheet1!A3",
-        valueInputOption: "RAW",
-        requestBody: {
-            values: [["Hello", "World"]],
-        },
-    });
-
-    return wR;
-}
-
 function twoDtoJSON(res){
     const rows = res.data.values;
 
@@ -102,6 +84,5 @@ function twoDtoJSON(res){
 module.exports = {
     dTu: dTu,
     aS:aS,
-    waS:waS,
     twoDtoJSON:twoDtoJSON
 };
