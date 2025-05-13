@@ -1,48 +1,48 @@
-@echo on
+@echo off
 setlocal EnableDelayedExpansion
 
-set "fileName="
+:: Config
+set "prefix=wweb-bot-sheet-"
+set "envFile=.env"
+set "key=GKFP"
+set "tempFile=%envFile%.tmp"
+set "foundFile="
 
-for /f %%F in ('dir /b /a:-d "wweb-bot-sheet-*"') do (
-    set "fileName=%%F"
-    goto :break
+:: Step 1: Find the first file starting with 'wweb-bot-sheet-'
+for /f %%F in ('dir /b /a:-d "%prefix%*"') do (
+    set "foundFile=%%F"
+    goto :found
 )
 
-:break
+:found
+if not defined foundFile (
+    echo No file starting with %prefix% found.
+    exit /b 1
+)
 
-:: Configuration
-set "ENV_FILE=.env"
-set "KEY=GKFP"
-set "VALUE=%fileName%"
+:: Step 2: Update or add to .env
+set "foundKey=0"
 
-:: Temp file
-set "TEMP_FILE=%ENV_FILE%.tmp"
-
-:: Flag to check if key was updated
-set "found=0"
-
-:: Loop through .env and update or copy lines
-(for /f "usebackq delims=" %%A in ("%ENV_FILE%") do (
-    set "line=%%A"
-    echo !line! | findstr /b /c:"%KEY%=" >nul
+(for /f "usebackq delims=" %%L in ("%envFile%") do (
+    set "line=%%L"
+    echo !line! | findstr /b /c:"%key%=" >nul
     if !errorlevel! equ 0 (
-        echo %KEY%=%VALUE%
-        set "found=1"
+        echo %key%=%foundFile%
+        set "foundKey=1"
     ) else (
         echo !line!
     )
-)) > "%TEMP_FILE%"
+)) > "%tempFile%"
 
-:: If key not found, append it
-if "%found%"=="0" (
-    echo %KEY%=%VALUE%>>"%TEMP_FILE%"
+if "!foundKey!"=="0" (
+    echo %key%=%foundFile%>>"%tempFile%"
 )
 
-:: Replace original file
-move /Y "%TEMP_FILE%" "%ENV_FILE%" >nul
+move /Y "%tempFile%" "%envFile%" >nul
+echo Updated %key%=%foundFile% in %envFile%
 
-echo Updated %KEY% in %ENV_FILE%
 
+@echo on
 cd /d "C:\wwebjs-bot-sheet"
 call npm start
 echo Exit code: %ERRORLEVEL%
