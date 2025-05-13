@@ -1,14 +1,13 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-:: Config
-set "prefix=wweb-bot-sheet-"
+:: Define the search prefix and target env file
+set "prefix=wweb-bot-sheet"
 set "envFile=.env"
 set "key=GKFP"
-set "tempFile=%envFile%.tmp"
-set "foundFile="
 
-:: Step 1: Find the first file starting with 'wweb-bot-sheet-'
+:: Step 1: Find the first matching file
+set "foundFile="
 for /f %%F in ('dir /b /a:-d "%prefix%*"') do (
     set "foundFile=%%F"
     goto :found
@@ -16,30 +15,13 @@ for /f %%F in ('dir /b /a:-d "%prefix%*"') do (
 
 :found
 if not defined foundFile (
-    echo No file starting with %prefix% found.
+    echo No file starting with "%prefix%" found.
     exit /b 1
 )
 
-:: Step 2: Update or add to .env
-set "foundKey=0"
-
-(for /f "usebackq delims=" %%L in ("%envFile%") do (
-    set "line=%%L"
-    echo !line! | findstr /b /c:"%key%=" >nul
-    if !errorlevel! equ 0 (
-        echo %key%=%foundFile%
-        set "foundKey=1"
-    ) else (
-        echo !line!
-    )
-)) > "%tempFile%"
-
-if "!foundKey!"=="0" (
-    echo %key%=%foundFile%>>"%tempFile%"
-)
-
-move /Y "%tempFile%" "%envFile%" >nul
-echo Updated %key%=%foundFile% in %envFile%
+:: Step 2: Append GKFP=filename to the .env file
+echo %key%=%foundFile%>>"%envFile%"
+echo Appended %key%=%foundFile% to %envFile%
 
 
 @echo on
