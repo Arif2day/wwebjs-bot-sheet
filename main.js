@@ -1,7 +1,5 @@
 const {getAllData,getServedNotificationData} = require('./utils/dataserver');
-const {initializeWwebjs,wwebClientInfo} = require('./utils/wwebbridge');
-const {findPropertyByPrefix} = require('./utils/common');
-const { log } = require('console');
+const {initializeWwebjs} = require('./utils/wwebbridge');
 
 let allData;
 

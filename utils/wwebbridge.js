@@ -18,12 +18,12 @@ const client = new Client({
 // run (only once) when the client is ready
 client.once('ready',async()=>{
     console.log('[Whatsapp Client] - is ready!');  
-    const today = new Date();
+    const today = new Date();    
     
     try {        
         var dataSource = readJSON(logFilePath());
         var unprocessed = dataSource.filter((e)=>{
-            return e.notif_status == false
+            return e.notif_status == false;
         });
         console.log('\n');
         console.log('----------------------------------------------------------');
@@ -35,42 +35,42 @@ client.once('ready',async()=>{
         console.log('[Data Source] - ready to access...'):
         console.log('[Data Source] - nothing to process...');
         
-        await notifierLoop(unprocessed,async (item,index)=>{         
+        await notifierLoop(client,unprocessed,async (item,index)=>{         
             var format,type;
             console.log((index+1)+' of '+(unprocessed.length));
             if(item.type_notif=='Notifikasi Tunggakan'){    
                 if(item.last_due_date<formatDate(today)){
                     //F_T2
-                    type = "Tunggakan lama" 
-                    format = process.env.FORMAT_T2                    
+                    type = "Tunggakan lama"; 
+                    format = process.env.FORMAT_T2;                    
                 }else{
                     //F_T1
-                    type = "Tunggakan bulan lalu" 
-                    format = process.env.FORMAT_T1
+                    type = "Tunggakan bulan lalu"; 
+                    format = process.env.FORMAT_T1;
                 }
             }else{
                 if(item.tgl_tempo==formatDate(today)){
                     //F_H0
-                    type = "H-0" 
-                    format = process.env.FORMAT_H0
+                    type = "H-0"; 
+                    format = process.env.FORMAT_H0;
                 }else{
                     //F_H-2
-                    type = "H-2" 
-                    format = process.env.FORMAT_HM2
+                    type = "H-2"; 
+                    format = process.env.FORMAT_HM2;
                 }
             }
             item.enter = "\n";
-            var message = convertToInterpolationString(format,item)
-            var number = findPropertyByPrefix(item,'whatsapp_')
-            await sendMsg(number,message)
+            var message = convertToInterpolationString(format,item);
+            var number = findPropertyByPrefix(item,'whatsapp_');
+
+            await sendMsg(number,message);
             // log file
             logNotificationHistory(`${item.type_notif} kelompok ${item.kelompok} (${type}) dikirim ke ${item.send_to} - ${number}`);
             console.log(`[Notification] - ${item.type_notif} kelompok ${item.kelompok} (${type}) dikirim ke ${item.send_to} - ${number}`);
             
-
             // update json log                        
             // Synchronously write the updated data back to the JSON file
-            dataSource = updateObjectKey(dataSource,item.idx,'notif_status',true)
+            dataSource = updateObjectKey(dataSource,item.idx,'notif_status',true);
             writeJSON(logFilePath(),dataSource,`[Data Source] - berhasil diupdate!`);
             console.log('----------------------------------------------------------');
             console.log('Notifikasi Total                     : ',dataSource.length);
