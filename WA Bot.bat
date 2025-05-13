@@ -22,7 +22,7 @@ if not defined foundFile (
 :: Step 2: Append GKFP=filename to the .env file
 >>"%envFile%" echo.
 >>"%envFile%" echo %key%="%foundFile%"
-
+echo Appended with blank line: %key%="%foundFile%" to %envFile%
 
 @echo on
 cd /d "C:\wwebjs-bot-sheet"
