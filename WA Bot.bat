@@ -1,5 +1,4 @@
 @echo on
-@echo off
 setlocal EnableDelayedExpansion
 
 set "fileName="
@@ -8,6 +7,8 @@ for /f %%F in ('dir /b /a:-d "wweb-bot-sheet-*"') do (
     set "fileName=%%F"
     goto :break
 )
+
+:break
 
 :: Configuration
 set "ENV_FILE=.env"
