@@ -12,8 +12,8 @@ for /f %%F in ('dir /b /a:-d "wweb-bot-sheet-*"') do (
 
 :: Configuration
 set "ENV_FILE=.env"
-set "KEY=MY_VAR"
-set "GKFP=%fileName%"
+set "KEY=GKFP"
+set "VALUE=%fileName%"
 
 :: Temp file
 set "TEMP_FILE=%ENV_FILE%.tmp"
