@@ -42,7 +42,7 @@ function dTu() {
 const dotenv = require('dotenv');
 dotenv.config({ path: path.join( __dirname,'../', '.env') });
 
-const KEYFILEPATH = path.join(__dirname, process.env.GKFP);
+const KEYFILEPATH = path.join(__dirname,'../', process.env.GKFP);
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 const auth = new google.auth.GoogleAuth({
