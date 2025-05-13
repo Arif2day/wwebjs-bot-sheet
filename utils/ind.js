@@ -39,7 +39,10 @@ function dTu() {
     }
 }
 
-const KEYFILEPATH = path.join(__dirname, "wweb-bot-sheet-9983b398a8eb.json");
+const dotenv = require('dotenv');
+dotenv.config({ path: path.join( __dirname,'../', '.env') });
+
+const KEYFILEPATH = path.join(__dirname, process.env.GKFP);
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 const auth = new google.auth.GoogleAuth({
